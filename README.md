@@ -1,8 +1,12 @@
 # shop-api
+
+
 this project is an api designed with node.js
 
 # frontEnd Repo
-  [shopping-site](https://github.com/aghed/shopping-site)
+
+[shopping-site](https://github.com/aghed/shopping-site)
+
 # functions
 
 user signup
