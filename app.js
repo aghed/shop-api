@@ -6,9 +6,11 @@ const morgan=require('morgan');
 const app=express();
 const bodyParser=require('body-parser');
 const mongoose=require('mongoose');
-const checkAuth=require('../middelware/check-auth');
+const checkAuth=require('./api/middelware/check-auth');
 
-mongoose.connect('mongodb://localhost:27017');
+mongoose.connect('mongodb://localhost:27017').catch(err=>{
+    console.log(err)
+});
 //this is used to handle monitoring
 app.use(morgan('dev'));
 //this is the body parser middleware
@@ -39,7 +41,7 @@ app.use('/orders',orderRoutes);
 
 app.use('/users',userRoutes);
 
-app.user('/authCheck',checkAuth,(req,res,next)=>{
+app.use('/authCheck',checkAuth,(req,res,next)=>{
     res.status(200).json({message:'success'});
 });
 //in case it bases the past tow middlewares

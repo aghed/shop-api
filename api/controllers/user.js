@@ -45,14 +45,19 @@ exports.user_log_in=(req,res,next)=>{
     User.find({email:req.body.email}).exec()
     .then(users=>{
         if(users.length<1){
-            res.status(401).json({
-                message:'Auth Failed'
+            return res.status(500).json({
+                message:'no user found!!'
             });
         }
+        console.log(req.body);
+        if(!req.body.password)
+                return res.status(500).json({
+                    message:'password required'
+                });
          bcrypt.compare(req.body.password,users[0].password,(err,same)=>{
             if(err){
-                return res.status(401).json({
-                    message:'Auth Failed'
+                return res.status(500).json({
+                    message:'unmatched_password'
                 });
             }
 
@@ -63,19 +68,15 @@ exports.user_log_in=(req,res,next)=>{
                     id:users[0]._id
                 }, process.env.JWT_KEY,
                 {
-                    expiresIn:"1h"
+                    expiresIn:"1s"
                 },
             );
+                
                 return res.status(200).json({
                     message:constants.success,
                     token:token
                 })
             }
-            //in case we reach it here
-
-            res.status(401).json({
-                message:'Auth Failed'
-            });
          });
     })
 }
